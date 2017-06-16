@@ -26,8 +26,23 @@ automatically generated.
 
 ## Starting xferticket
 
+Install ruby and some libraries:
+    sudo apt-get install ruby libldap2-dev libsasl2-dev libsqlite3-dev 
+
+Install required ruby libraries:
     bundle install
+
+Make a configuration file
+    cp config/config-example.yml config/config.yml
+
+Create a directory where xferticket is storing files:
+    mkdir /tmp/xferticket
+
+Start local server:
     bundle exec foreman start
+
+Now you can test xferticket by pointing your browser to localhost:5000.
+
 
 ## Deployment
 
