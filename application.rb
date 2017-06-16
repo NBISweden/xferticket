@@ -60,7 +60,7 @@ end
 
 # remove expired tickets every minute
 scheduler = Rufus::Scheduler.new
-scheduler.every '10s' do
+scheduler.every '60s' do
           Ticket.all.each do |t|
                   if(t.created_at + Sinatra::Application::settings.expiration_time < DateTime.now)
                     settings.logger.info "Deleting expired ticket #{t.uuid}"
@@ -93,6 +93,7 @@ post "/login" do
   elsif(settings.authentication == "ldap")
     user = DirectoryUser.authenticate(settings, [params[:username], params[:password]])
     session[:userid] = user.first.uid.first if user
+    session.logger.info "Log in by user #{session[:userid]}"
   end
   if session[:userid]
     redirect to('/')
@@ -102,6 +103,7 @@ post "/login" do
   end
 end
 get "/logout" do
+  session.logger.info "Log out by user #{session[:userid]}"
   session[:userid] = nil
   redirect to('/')
 end
