@@ -36,7 +36,7 @@ See INSTALL for deployment instructions. (TBC)
 ## Acknowledgments
 
 This project was inspired by other well-written file sharing utilities, e.g.
-[goploader]() and [Coquelicot](https://coquelicot.potager.org/)
+[goploader](https://up.depado.eu/) and [Coquelicot](https://coquelicot.potager.org/)
 
 (c) 2017 Mikael Borg. This code is distributed under the GPLv3 license.
 
