@@ -6,5 +6,6 @@ log/*
 *.swo
 .env
 TODO
+config/config.yml
 config/config-nbis.yml
 
