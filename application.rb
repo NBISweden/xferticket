@@ -92,7 +92,7 @@ post "/login" do
     end
   elsif(settings.authentication == "ldap")
     user = DirectoryUser.authenticate(settings, [params[:username], params[:password]])
-    session[:userid] = user.first.uid.first
+    session[:userid] = user.first.uid.first if user
   end
   if session[:userid]
     redirect to('/')
