@@ -159,8 +159,10 @@ get "/tickets/:uuid/:f/download/?" do |u,f|
   halt 401, 'not found' unless @ticket
   fn = File.join(@ticket.directory, f)
   halt 401, 'not found' unless File.exist?(fn)
-  if(settings.accelredirect)
-    response.headers['X-Accel-Redirect'] = fn
+  if(settings.accelredirect )
+    redirectlink = fn.sub(File.dirname(settings.datadir), "")
+    settings.logger.info "#{fn} -> X-Accel-Redirect: #{redirectlink}"
+    response.headers['X-Accel-Redirect'] = redirectlink
   end
   send_file fn
 end
