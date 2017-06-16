@@ -1,0 +1,9 @@
+*.db
+*.sqlite3
+.bundle/*
+log/*
+*.swp
+*.swo
+.env
+TODO
+

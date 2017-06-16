@@ -1,0 +1,36 @@
+<h2>Transient storage areas</h2>
+This service provides temporary storage which can be used for data
+deliveries. 
+
+<ul>
+  <li>The storage areas, and all files, are automatically
+    deleted after the expiration time.</li>
+  <li>Anyone with the link can use it for both file upload and file download.</li>
+  <li>There are no size limitations apart from the available space on the data
+    partition.</li>
+</ul>
+<% if session[:userid] %>
+  <h4>Create New Ticket (valid for <%= settings.expiration_time %> days)</h4>
+<form method="POST" action="/tickets">
+        <input type="text" name="title" placeholder="Title (optional)">
+        <input type="submit" value="create">
+</form>
+<% end %>
+
+<% unless @tickets.nil? || @tickets.empty? %>
+<h4>Current Tickets</h4>
+<table style="width:100%">
+  <tr>
+    <th>Expiry date</th>
+    <th>Title</th>
+    <th>No of files</th>
+  </tr>
+  <% @tickets.each do |t| %>
+  <tr>
+    <td><a href="/tickets/<%= t.uuid %>"><%= t.expirydate.to_s %></a></td>
+    <td><%= t.title.to_s %></td>
+    <td><%= Dir.glob(File.join(t.directory,'*')).size %></td>
+</tr>
+  <% end %>
+</table>
+<% end %>

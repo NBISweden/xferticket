@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= SiteConfig.title %></title>
+    <link href="/main.css" rel="stylesheet" type="text/css"></link>
+  </head>
+  <body>
+    <div class="topnav">
+      <a class="logo" href="/"><img src="/xferticket.svg" style="height:64px;"/></a>
+              <% if settings.logo %>
+                <a class="right logo" href="<%= settings.logolink ? settings.logolink : "/" %>"><img src="<%= settings.logo %>" style="height:64px;"/></a>
+              <% end %>
+              <a class="right" href="#about">About</a>
+              <% if session[:userid] %>
+                <a class="right" href="/logout">Log out</a>
+                <a class="right" href="/"><%= session[:userid] %></a>
+            <% else %>
+              <a class="right" href="/login">Login</a>
+            <% end %>
+    </div>
+    <% if flash[:error] %>
+      <div class="flash">
+        <%= flash[:error] %>
+      </div>
+      <% end %>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <h1>
+            <a href="/"><%= SiteConfig.title %></a>
+            </h1>
+        </div>
+      </div>
+      <div class="content">
+        <%= yield %>
+      </div>
+      <div class="footer">
+        <p class="legal">&mdash; &copy; <%= Time.now.strftime("%Y") %> <%= SiteConfig.author %> &mdash;
+        <a href="<%= SiteConfig.repo %>"><img src="/GitHub-Mark-32px.png" style="vertical-align:middle"/> GitHub</a> &mdash;
+        <a href="http://www.gnu.org/licenses/gpl.txt">GPLv3</a> &mdash;
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

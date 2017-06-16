@@ -1,0 +1,39 @@
+<% if @ticket.title %>
+  <h5><%= @ticket.title %></h5>
+<% end %>
+<ul>
+   <li>Created by: <%= @ticket.userid %></li>
+   <li>Created: <%= @ticket.created_at.to_s%></li>
+   <li>Expiry date: <%= @ticket.expirydate.to_s %></li> 
+</ul>
+<% if @ticket.files.size > 0  %>
+<h4>Files</h4>
+  <% @ticket.files.each do |f| %>
+  <a href="/tickets/<%= File.join(@ticket.uuid, File.basename(f)) %>/download"><%= File.basename(f) %></a><br>
+<% end %>
+<% end %>
+<% if @ticket.files.size > 0 %>
+<br><br>
+<h4>Download all</h4>
+All files can be downloaded as a tar archive:<br>
+<a href=/tickets/<%= @ticket.uuid %>/downloadarchive>Download all files as archive.</a><br>
+From the command line:<br>
+<pre>
+curl -O -J https://<%= request.env["HTTP_HOST"] %>/downloadarchive/<%= @ticket.uuid %>
+</pre>
+<% end %>
+
+<h4>Upload</h4>
+<form method="POST" action="/tickets/<%= @ticket.uuid %>/upload" enctype='multipart/form-data'>
+                <input type="file" name="filename">
+                <input type="submit" value="Upload">
+</form>
+
+<h4>Command line upload</h4>
+You can also use e.g. curl to upload files, for example:
+<pre>
+curl -i -X POST -H "Content-Type: multipart/form-data" -F "filename=@FILENAME" \
+https://<%= request.env["HTTP_HOST"] %>/tickets/<%= @ticket.uuid %>/upload 
+</pre>
+where FILENAME is the path to the file you wish to upload.
+

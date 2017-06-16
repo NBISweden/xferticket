@@ -1,0 +1,36 @@
+# ticket TTL in days
+expiration_time: 2
+
+# data directory
+datadir: "/tmp/xferticket/"
+
+# authentication method
+# valid options: 'ldap' and 'simplepassword'
+authentication: "ldap"
+
+# sample ldap settings below are for the
+# Forum Systems online LDAP test server.
+# http://www.forumsys.com/tutorials/integration-how-to/ldap/online-ldap-test-server/
+#
+# Sample users include: einstein, tesla
+# All sample users have password 'password'
+# 
+# Hostname of the authenticating LDAP server
+ldap_server: "ldap.forumsys.com"
+
+# Port of the authenticating LDAP server
+ldap_port: 389
+
+# ldap encryption
+ldap_enc: false
+  
+# Search base of the authenticating LDAP server
+ldap_base: "dc=example,dc=com"
+
+accelredirect: false
+
+# set a user and password for simple password
+# authentication
+simpleuser: "foo"
+simplepassword: "onlyfortesting"
+

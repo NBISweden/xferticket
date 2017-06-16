@@ -1,0 +1,21 @@
+# title
+title: "xferticket"
+# ticket TTL in days
+expiration_time: 2
+
+# data directory
+datadir: "/tmp/xferticket/"
+
+# Hostname of the authenticating LDAP server
+ldap_server: "ipa.nbis.se"
+
+authentication: "ldap"
+ldap_enc: true
+# Port of the authenticating LDAP server
+ldap_port: 636
+
+# Search base of the authenticating LDAP server
+ldap_base: "dc=nbis,dc=se"
+
+accelredirect: false
+
