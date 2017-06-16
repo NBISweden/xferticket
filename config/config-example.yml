@@ -1,5 +1,10 @@
+# logo file (link to image, or false to disable)
+logo: false
+# logolink: URL for logo
+logolink: false
+
 # ticket TTL in days
-expiration_time: 2
+expiration_time: 7
 
 # data directory
 datadir: "/tmp/xferticket/"
