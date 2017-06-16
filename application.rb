@@ -93,7 +93,7 @@ post "/login" do
   elsif(settings.authentication == "ldap")
     user = DirectoryUser.authenticate(settings, [params[:username], params[:password]])
     session[:userid] = user.first.uid.first if user
-    session.logger.info "Log in by user #{session[:userid]}"
+    settings.logger.info "Log in by user #{session[:userid]}"
   end
   if session[:userid]
     redirect to('/')
@@ -103,7 +103,7 @@ post "/login" do
   end
 end
 get "/logout" do
-  session.logger.info "Log out by user #{session[:userid]}"
+  settings.logger.info "Log out by user #{session[:userid]}"
   session[:userid] = nil
   redirect to('/')
 end
