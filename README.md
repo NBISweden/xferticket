@@ -1,5 +1,7 @@
 # xferticket -- transient storage
 
+![](./public/xferticket.svg)
+
 Create transient storage areas with public but hard-to-guess links. Links and
 content are deleted after a predefined expiry time.
 
