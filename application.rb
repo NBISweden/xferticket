@@ -59,7 +59,8 @@ configure do
 end
 
 # remove expired tickets every minute
-scheduler = Rufus::Scheduler.new
+scheduler = Rufus::Scheduler.new(:lockfile => ".rufus-scheduler.lock")
+unless scheduler.down?
 scheduler.every '60s' do
           Ticket.all.each do |t|
                   if(t.created_at + Sinatra::Application::settings.expiration_time < DateTime.now)
@@ -68,6 +69,8 @@ scheduler.every '60s' do
                   end
           end
 end
+end
+
 helpers do
   def protected!
     redirect(to('/login')) unless session[:userid]
@@ -159,8 +162,10 @@ get "/tickets/:uuid/:f/download/?" do |u,f|
   halt 401, 'not found' unless @ticket
   fn = File.join(@ticket.directory, f)
   halt 401, 'not found' unless File.exist?(fn)
-  if(settings.accelredirect)
-    response.headers['X-Accel-Redirect'] = fn
+  if(settings.accelredirect )
+    redirectlink = fn.sub(File.dirname(settings.datadir), "")
+    settings.logger.info "#{fn} -> X-Accel-Redirect: #{redirectlink}"
+    response.headers['X-Accel-Redirect'] = redirectlink
   end
   send_file fn
 end
