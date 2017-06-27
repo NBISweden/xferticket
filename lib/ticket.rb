@@ -22,7 +22,8 @@ class Ticket
           self.userid = user
           self.title = params[:title]
           self.uuid = SecureRandom.urlsafe_base64(n=32)
-          Dir.mkdir(self.directory, 0700)
+          Dir.mkdir(self.directory, 0777)
+          File.chmod(0777, self.directory)
   end
 
   def expirydate
