@@ -26,10 +26,11 @@ deliveries.
     <th>No of files</th>
   </tr>
   <% @tickets.each do |t| %>
-  <tr>
+  <tr id="<%= t.uuid %>">
     <td><a href="/tickets/<%= t.uuid %>"><%= t.expirydate.to_s %></a></td>
     <td><%= t.title.to_s %></td>
     <td><%= Dir.glob(File.join(t.directory,'*')).size %></td>
+    <td><input id="del" type="button" value="🗑" onclick="deleteTicket('<%= t.uuid %>');"/></td>
 </tr>
   <% end %>
 </table>

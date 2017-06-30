@@ -19,21 +19,32 @@ All files can be downloaded as a tar archive:<br>
 <a href=/tickets/<%= @ticket.uuid %>/downloadarchive>Download all files as archive.</a><br>
 From the command line:<br>
 <pre>
-curl -O -J https://<%= request.env["HTTP_HOST"] %>/downloadarchive/<%= @ticket.uuid %>
+curl -O -J https://<%= request.env["HTTP_HOST"] %>/tickets/<%= @ticket.uuid %>/downloadarchive
 </pre>
+Note that downloading individual files is more performant than downloading as
+archive.
 <% end %>
 
+<% if @ticket.allow_uploads %>
 <h4>Upload</h4>
-<form method="POST" action="/tickets/<%= @ticket.uuid %>/upload" enctype='multipart/form-data'>
-                <input type="file" name="filename">
+<form id="uploadform" method="POST" action="/tickets/<%= @ticket.uuid %>/upload" enctype='multipart/form-data'  >
+                <input id="fn" type="file" name="filename">
                 <input type="submit" value="Upload">
 </form>
 
-<h4>Command line upload</h4>
+<h5>Command line upload</h5>
 You can also use e.g. curl to upload files, for example:
 <pre>
-curl -i -X POST -H "Content-Type: multipart/form-data" -F "filename=@FILENAME" \
-https://<%= request.env["HTTP_HOST"] %>/tickets/<%= @ticket.uuid %>/upload 
+curl --upload-file FILENAME \
+https://<%= request.env["HTTP_HOST"] %>/tickets/<%= @ticket.uuid %>/upload/ 
 </pre>
-where FILENAME is the path to the file you wish to upload.
+where FILENAME is the path to the file you wish to upload. NB: the trailing slash is required.
+<% end %>
+
+<script>
+function startUpload(){
+  fn = $("#fn")[0].files[0].name;
+  uploadFile("1lim_vz_iY0TqPMR_vKaQsgjAMuIZi1mXUP3TuG5YYs", fn);
+};
+</script>
 

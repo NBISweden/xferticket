@@ -7,6 +7,7 @@ require "rufus/scheduler"
 require "minitar"
 require "securerandom"
 require "logger"
+require 'pp'
 require File.join(File.dirname(__FILE__), "environment")
 
 # This is to enable streaming tar:
@@ -48,11 +49,16 @@ if(settings.authentication == "simplepassword")
 end
 
 # set up sessions
-enable :sessions
+#enable :sessions
+#set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
+session_secret = ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
+use Rack::Session::Cookie, :key => 'rack.session',
+  :path => '/',
+  :secret => session_secret
+
+
+
 register Sinatra::Flash
-
-set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
-
 
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
@@ -74,6 +80,11 @@ end
 helpers do
   def protected!
     redirect(to('/login')) unless session[:userid]
+  end
+
+  def ownerprotected!(t)
+    protected!
+    halt 401, "Not authorized\n" unless session[:userid] == t.userid
   end
 end
 
@@ -122,14 +133,11 @@ end
 
 # delete ticket
 delete "/tickets/:uuid/?" do |u|
-  protected!
   @ticket = Ticket.first(:uuid => u)
-  if @ticket.userid == session["userid"]
-    @ticket.destroy 
-    redirect to('/')
-  else
-    halt 401, "Not authorized\n"
-  end
+  halt 404, 'not found' unless @ticket
+  ownerprotected!(@ticket)
+  @ticket.destroy 
+  redirect to('/')
 end
 
 
@@ -141,17 +149,37 @@ end
 get "/tickets/:uuid/?" do |u|
   #not_found if u.nil?
   @ticket = Ticket.first(:uuid => u)
-  halt 401, 'not found' unless @ticket
+  halt 404, 'not found' unless @ticket
   erb :ticket
+end
+
+# set allow_uploads
+patch "/tickets/:uuid/allow_uploads" do |u|
+  @ticket = Ticket.first(:uuid => u)
+  ownerprotected!(@ticket)
+  @ticket.set_allow_uploads(params['allow_uploads'] == "true")
+  @ticket.save
+  200
 end
 
 # upload file
 post "/tickets/:uuid/upload" do |u|
-        puts params
   @ticket = Ticket.first(:uuid => u)
-  halt 401, 'not found' unless @ticket
+  halt 404, 'not found' unless @ticket
+  halt 401, 'not allowed' unless @ticket.allow_uploads
   File.open(File.join(@ticket.directory, params['filename'][:filename]), "w") do |f|
     f.write(params['filename'][:tempfile].read)
+    #f.write(request.body.read) # does not work, boundaries included
+  end
+  redirect back
+end
+
+put "/tickets/:uuid/upload/:fn" do |u,fn|
+  @ticket = Ticket.first(:uuid => u)
+  halt 404, 'not found' unless @ticket
+  halt 401, 'not allowed' unless @ticket.allow_uploads
+  File.open(File.join(@ticket.directory, fn), "w") do |f|
+    f.write(request.body.read)
   end
   redirect to('/tickets/'+u )
 end
@@ -159,9 +187,9 @@ end
 # download file
 get "/tickets/:uuid/:f/download/?" do |u,f|
   @ticket = Ticket.first(:uuid => u)
-  halt 401, 'not found' unless @ticket
+  halt 404, 'not found' unless @ticket
   fn = File.join(@ticket.directory, f)
-  halt 401, 'not found' unless File.exist?(fn)
+  halt 404, 'not found' unless File.exist?(fn)
   if(settings.accelredirect )
     redirectlink = fn.sub(File.dirname(settings.datadir), "")
     settings.logger.info "#{fn} -> X-Accel-Redirect: #{redirectlink}"
@@ -170,10 +198,10 @@ get "/tickets/:uuid/:f/download/?" do |u,f|
   send_file fn
 end
 
-# download archive (not working)
+# download archive
 get "/tickets/:uuid/downloadarchive/?" do |u|
   @ticket = Ticket.first(:uuid => u)
-  halt 401, 'not found' unless @ticket
+  halt 404, 'not found' unless @ticket
   attachment("archive.tar")
     stream do |out|
       Dir.chdir(@ticket.directory) do
@@ -181,3 +209,4 @@ get "/tickets/:uuid/downloadarchive/?" do |u|
       end
   end
 end
+

@@ -101,6 +101,9 @@ a:hover {
   display: inline-block;
   vertical-align: middle;
 }
+.right {
+  text-align: right;
+}
 
 th {
       text-align: left;

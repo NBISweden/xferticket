@@ -2,21 +2,28 @@
 <html>
   <head>
     <title><%= SiteConfig.title %></title>
-    <link href="/main.css" rel="stylesheet" type="text/css"></link>
+    <link href="/css/main.css" rel="stylesheet" type="text/css"></link>
     <link rel="shortcut icon" href="/favicon.png" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous">
+    </script>
+    <script src="/js/xferticket.js"></script>
   </head>
   <body>
-    <div class="topnav">
-      <a class="logo" href="/"><img src="/xferticket.svg" style="height:64px;"/></a>
+    <div class="topnav" >
+      <a class="logo" href="/"><img src="/xferticket.svg" style="height:64px;" /></a>
               <% if settings.logo %>
-                <a class="right logo" href="<%= settings.logolink ? settings.logolink : "/" %>"><img src="<%= settings.logo %>" style="height:64px;"/></a>
+                <a class="right logo" href="<%= settings.logolink ? settings.logolink : "/" %>"><img src="<%= settings.logo %>" style="height:64px;" /></a>
               <% end %>
-              <a class="right" href="#about">About</a>
+              <a class="right" href="#about" >About</a>
               <% if session[:userid] %>
-                <a class="right" href="/logout">Log out</a>
-                <a class="right" href="/"><%= session[:userid] %></a>
+                <a class="right" href="/logout" >Log out</a>
+                <a class="right" href="/" ><%= session[:userid] %></a>
             <% else %>
-              <a class="right" href="/login">Login</a>
+              <a class="right" href="/login" >Login</a>
             <% end %>
     </div>
     <% if flash[:error] %>

@@ -7,6 +7,7 @@ class Ticket
   property :userid, String
   property :title, String
   property :uuid, String, :unique => true, :required => true
+  property :allow_uploads, Boolean, :default => true
 
   before :destroy do
           # replace w/ delete dir
@@ -36,5 +37,15 @@ class Ticket
 
   def files
           return Dir.glob(File.join(self.directory, "*"))
+  end
+
+  def set_allow_uploads(val)
+    if val
+      self.allow_uploads = true
+      File.chmod(0777, self.directory)
+    else
+      self.allow_uploads = false
+      File.chmod(0555, self.directory)
+    end
   end
 end
