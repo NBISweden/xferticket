@@ -26,5 +26,17 @@ function uploadFile(uuid, fn) {
   });
 };
 
-function toggleUploads(id) {
+function toggleUploads(uuid) {
+  var btn = document.getElementById("uploadswitch-"+uuid );
+  var state = btn.checked
+  var url = '/tickets/' + uuid + '/allow_uploads?allow_uploads='+state;
+  fetch(url,
+      {
+        method: 'PATCH',
+        credentials: 'same-origin',
+        body: 'allow_uploads:'+state
+      }).then(function(response){
+  }, function(error){
+        console.log(error);
+  });
 };

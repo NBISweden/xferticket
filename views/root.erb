@@ -24,13 +24,22 @@ deliveries.
     <th>Expiry date</th>
     <th>Title</th>
     <th>No of files</th>
+    <th>Uploads</th>
   </tr>
   <% @tickets.each do |t| %>
   <tr id="<%= t.uuid %>">
     <td><a href="/tickets/<%= t.uuid %>"><%= t.expirydate.to_s %></a></td>
     <td><%= t.title.to_s %></td>
     <td><%= Dir.glob(File.join(t.directory,'*')).size %></td>
-    <td><input id="del" type="button" value="🗑" onclick="deleteTicket('<%= t.uuid %>');"/></td>
+    <td>
+      <label class="switch">
+        <input type="checkbox" 
+               id="uploadswitch-<%= t.uuid %>"  onclick="toggleUploads('<%= t.uuid %>');"
+               <%= t.allow_uploads ? "checked" : "unchecked" %> >
+          <div class="slider round"></div>
+      </label>
+    </td>
+    <td><button onclick="deleteTicket('<%= t.uuid %>');" ><i class="fa fa-trash fa-2x"></i></button></td>
 </tr>
   <% end %>
 </table>

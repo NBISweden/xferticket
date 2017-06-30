@@ -84,6 +84,7 @@ helpers do
 
   def ownerprotected!(t)
     protected!
+    halt 404, "Not found\n" unless t
     halt 401, "Not authorized\n" unless session[:userid] == t.userid
   end
 end
