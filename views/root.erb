@@ -5,7 +5,8 @@ deliveries.
 <ul>
   <li>The storage areas, and all files, are automatically
     deleted after the expiration time.</li>
-  <li>Anyone with the link can use it for both file upload and file download.</li>
+  <li>Anyone with the link can use it to download data and, if set by the
+    ticket owner, also to upload files.</li>
   <li>There are no size limitations apart from the available space on the data
     partition.</li>
 </ul>
@@ -36,10 +37,10 @@ deliveries.
         <input type="checkbox" 
                id="uploadswitch-<%= t.uuid %>"  onclick="toggleUploads('<%= t.uuid %>');"
                <%= t.allow_uploads ? "checked" : "unchecked" %> >
-          <div class="slider round"></div>
+          <div class="slider round" title="Enable/disable uploads"></div>
       </label>
     </td>
-    <td><button onclick="deleteTicket('<%= t.uuid %>');" ><i class="fa fa-trash fa-2x"></i></button></td>
+    <td><button title="Delete" onclick="deleteTicket('<%= t.uuid %>');" ><i class="fa fa-trash fa-2x"></i></button></td>
 </tr>
   <% end %>
 </table>

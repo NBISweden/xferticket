@@ -1,7 +1,7 @@
 body {
   background: #EEEEEE;
   color: #1B1B1B;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
   line-height: 1.6;
   font-size:18px;
   color:#444;
@@ -9,7 +9,7 @@ body {
 }
 .container {
   margin: 0 auto;
-  width: 800px;
+  width: 75%;
 }
 .header {
   padding: 0.5em 0 0 0;
