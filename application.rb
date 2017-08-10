@@ -21,6 +21,8 @@ configure :production, :development do
   logger.level = Logger::INFO
   logger.datetime_format = '%a %d-%m-%Y %H%M '
   set :logger, logger
+  set :show_exceptions, true
+  set :dump_errors, true
 end
 
 # Load config file
@@ -164,13 +166,18 @@ patch "/tickets/:uuid/allow_uploads" do |u|
 end
 
 # upload file
-post "/tickets/:uuid/upload" do |u|
+post "/tickets/:uuid/upload/?" do |u|
   @ticket = Ticket.first(:uuid => u)
   halt 404, 'not found' unless @ticket
   halt 401, 'not allowed' unless @ticket.allow_uploads
-  File.open(File.join(@ticket.directory, params['filename'][:filename]), "w") do |f|
-    f.write(params['filename'][:tempfile].read)
-    #f.write(request.body.read) # does not work, boundaries included
+  if (params["filename.uploadsmodule"])
+    # upload already handled by fron httpd, just move file to correct location
+    FileUtils.mv(params["filename.path"], File.join(@ticket.directory,params["filename.name"]))
+  else
+    File.open(File.join(@ticket.directory, params['filename'][:filename]), "w") do |f|
+      f.write(params['filename'][:tempfile].read)
+      #f.write(request.body.read) # does not work, boundaries included
+    end
   end
   redirect back
 end
