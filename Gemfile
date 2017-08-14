@@ -15,6 +15,7 @@ gem 'sys-filesystem'
 gem 'rufus-scheduler'
 gem 'minitar'
 gem 'net-ldap'
+gem 'puma'
 
 group :development do
   gem 'foreman'

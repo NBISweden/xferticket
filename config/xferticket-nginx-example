@@ -1,3 +1,6 @@
+upstream puma_server {
+	server unix:/usr/local/src/xferticket/tmp/sockets/puma.sock fail_timeout=0;
+}
 server {
 	listen         80;
 	server_name u-ip-81-109.hpc2n.umu.se;
@@ -15,9 +18,10 @@ server {
         #error_log /tmp/nginx.log debug;
 # test uploads module
         location ~ ^/tickets/([^/]+)/upload[/]*$ {
-          #upload_pass @fast_upload_endpoint;
           upload_pass @app;
+          upload_resumable on;
           upload_store /mnt/data/tmp/uploads;
+          upload_state_store /mnt/data/tmp/uploadstates;
 	  upload_store_access user:rw group:rw all:r;
 	  upload_set_form_field $upload_field_name.name "$upload_file_name";
 	  upload_set_form_field $upload_field_name.content_type "$upload_content_type";
@@ -33,8 +37,11 @@ server {
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header Host $http_host;
 		proxy_redirect off;
+                # Disable request and response buffering
+		proxy_request_buffering off;
+		proxy_buffering off;
 # pass to the upstream unicorn server mentioned above
-		proxy_pass http://unicorn_server;
+		proxy_pass http://puma_server;
 	}
 
 	location /xferticketdata {
