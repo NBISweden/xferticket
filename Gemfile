@@ -16,6 +16,7 @@ gem 'rufus-scheduler'
 gem 'minitar'
 gem 'net-ldap'
 gem 'puma'
+gem 'filesize'
 
 group :development do
   gem 'foreman'

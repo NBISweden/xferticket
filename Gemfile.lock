@@ -61,6 +61,7 @@ GEM
       tzinfo
     fastercsv (1.5.5)
     ffi (1.9.18)
+    filesize (0.1.1)
     foreman (0.84.0)
       thor (~> 0.19.1)
     json (1.8.6)
@@ -128,6 +129,7 @@ DEPENDENCIES
   dm-timestamps
   dm-validations
   dotenv
+  filesize
   foreman
   minitar
   net-ldap

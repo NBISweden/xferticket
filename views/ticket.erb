@@ -1,3 +1,4 @@
+<% require 'filesize' %>
 <% if @ticket.title %>
   <h5><%= @ticket.title %></h5>
 <% end %>
@@ -9,7 +10,7 @@
 <% if @ticket.files.size > 0  %>
 <h4>Files</h4>
   <% @ticket.files.each do |f| %>
-  <a href="/tickets/<%= File.join(@ticket.uuid, File.basename(f)) %>/download"><%= File.basename(f) %></a><br>
+  <a href="/tickets/<%= File.join(@ticket.uuid, File.basename(f)) %>/download"><%= File.basename(f) %></a> <%= Filesize.new(File.stat(f).size()).pretty %><br>
 <% end %>
 <% end %>
 <% if @ticket.files.size > 0 %>
