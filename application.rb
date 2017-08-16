@@ -89,6 +89,11 @@ helpers do
     halt 404, "Not found\n" unless t
     halt 401, "Not authorized\n" unless session[:userid] == t.userid
   end
+
+  def dirsize(path)
+    return 0 unless File.directory?(path)
+    Dir.glob(File.join(path, '**', '*')).map{ |f| File.exist?(f) ? File.size(f) : 0  }.inject(0, :+)
+  end
 end
 
 # root page
