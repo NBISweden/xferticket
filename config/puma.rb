@@ -19,3 +19,5 @@ bind "unix://#{shared_dir}/sockets/puma.sock"
 # Set master PID and state locations
 pidfile "#{shared_dir}/puma.pid"
 state_path "#{shared_dir}/puma.state"
+
+daemonize true
