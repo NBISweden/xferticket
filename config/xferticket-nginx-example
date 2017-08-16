@@ -1,6 +1,8 @@
+# define puma socket
 upstream puma_server {
 	server unix:/usr/local/src/xferticket/tmp/sockets/puma.sock fail_timeout=0;
 }
+# redirect all traffic to use SSL
 server {
 	listen         80;
 	server_name u-ip-81-109.hpc2n.umu.se;
@@ -15,8 +17,9 @@ server {
 	ssl_certificate    /etc/ssl/certs/selfsigned.pem;
 	ssl_certificate_key    /etc/ssl/private/selfsigned.key;
 	root /usr/local/src/xferticket/public;
-        #error_log /tmp/nginx.log debug;
-# test uploads module
+        # uncomment the line below for debug log
+        # error_log /tmp/nginx.log debug;
+        # use uploads module for better performance
         location ~ ^/tickets/([^/]+)/upload[/]*$ {
           upload_pass @app;
           upload_resumable on;
@@ -40,7 +43,7 @@ server {
                 # Disable request and response buffering
 		proxy_request_buffering off;
 		proxy_buffering off;
-# pass to the upstream unicorn server mentioned above
+                # pass to the upstream pume server defined above
 		proxy_pass http://puma_server;
 	}
 
