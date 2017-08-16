@@ -1,3 +1,5 @@
+<% require 'filesize' %>
+
 <h2>Transient storage areas</h2>
 This service provides temporary storage which can be used for data
 deliveries. 
@@ -25,6 +27,7 @@ deliveries.
     <th>Expiry date</th>
     <th>Title</th>
     <th>No of files</th>
+    <th>Total size</th>
     <th>Uploads</th>
   </tr>
   <% @tickets.each do |t| %>
@@ -32,6 +35,7 @@ deliveries.
     <td><a href="/tickets/<%= t.uuid %>"><%= t.expirydate.to_s %></a></td>
     <td><%= t.title.to_s %></td>
     <td><%= Dir.glob(File.join(t.directory,'*')).size %></td>
+    <td><%= Filesize.new(dirsize(t.directory)).pretty %></td>
     <td>
       <label class="switch">
         <input type="checkbox" 

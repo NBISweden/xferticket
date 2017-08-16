@@ -9,11 +9,27 @@
 </ul>
 <% if @ticket.files.size > 0  %>
 <h4>Files</h4>
-  <% @ticket.files.each do |f| %>
-  <a href="/tickets/<%= File.join(@ticket.uuid, File.basename(f)) %>/download"><%= File.basename(f) %></a> <%= Filesize.new(File.stat(f).size()).pretty %><br>
+<table style="width:100%">
+  <tr>
+    <th>Filename</th>
+    <th>Size</th>
+    <th>Date</th>
+  </tr>
+
+  <% @ticket.files.sort.each do |f| %>
+  <tr>
+  <td><a href="/tickets/<%= File.join(@ticket.uuid, File.basename(f)) %>/download"><%= File.basename(f) %></a> </td>
+  <td><%= Filesize.new(File.stat(f).size()).pretty %></td>
+  <td><%= File.stat(f).mtime.asctime %></td>
+  </tr>
+<% end %>
+</table>
+<% if @ticket.files.size > 1  %>
+<br>
+<b>Total size: </b> <%= Filesize.new(dirsize(@ticket.directory)).pretty %>
 <% end %>
 <% end %>
-<% if @ticket.files.size > 0 %>
+<% if @ticket.files.size > 1 %>
 <br><br>
 <h4>Download all</h4>
 All files can be downloaded as a tar archive:<br>
