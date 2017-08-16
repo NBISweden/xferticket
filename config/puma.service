@@ -1,0 +1,27 @@
+[Unit]
+Description=Puma HTTP Server
+After=network.target
+
+[Service]
+# Foreground process (do not use --daemon in ExecStart or config.rb)
+Type=simple
+
+# Preferably configure a non-privileged user
+User=www-data
+
+# The path to the puma application root
+WorkingDirectory=/usr/local/src/xferticket/
+
+# environment variables needed by puma (e.g. GEM_HOME, SESSION_SECRET)
+Environment="ENVFILE=config/runtimeenv"
+
+ExecStart=/bin/bash -a -c "source $ENVFILE && bundle exec puma config.ru"
+
+# Variant: Use config file with `bind` directives instead:
+# ExecStart=<WD>/sbin/puma -C config.rb
+# Variant: Use `bundle exec --keep-file-descriptors puma` instead of binstub
+
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
