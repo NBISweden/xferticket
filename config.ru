@@ -1,7 +1,7 @@
-require 'rubygems'
-require File.join(File.dirname(__FILE__), 'application')
+$LOAD_PATH.push File.expand_path("../lib", __FILE__)
+require "xferticket"
 
-set :run, false
-set :environment, :production
+#set :run, false
+#set :environment, :production
 
-run Sinatra::Application
+run XferTickets::Application
