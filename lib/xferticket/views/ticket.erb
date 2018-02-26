@@ -46,7 +46,7 @@ archive.
 <h4>Upload</h4>
 <form id="uploadform" method="POST" action="/tickets/<%= @ticket.uuid %>/upload" enctype='multipart/form-data'  >
                 <input id="fn" type="file" name="filename">
-                <input type="submit" value="Upload">
+                <input type="submit" value="Upload" disabled >
 </form>
 
 <h5>Command line upload</h5>
@@ -59,3 +59,8 @@ where FILENAME is the path to the file you wish to upload.
 <% end %>
 
 
+<script>
+$('input:file').on("change", function() {
+      $('input:submit').prop('disabled', !$(this).val());
+});
+</script>
