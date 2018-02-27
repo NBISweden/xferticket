@@ -5,6 +5,7 @@ require 'dm-aggregates'
 require 'dm-migrations'
 require 'ostruct'
 require "sinatra/config_file"
+require 'sys/filesystem'
 
 
 module XferTickets
@@ -141,6 +142,15 @@ module XferTickets
       redirect to('/')
     end
 
+    # view status
+    get "/status" do
+      protected!
+      @no_of_tickets = Ticket.all.size
+      @bytes_free = Sys::Filesystem.stat(settings.datadir).bytes_free
+      @bytes_used = dirsize(settings.datadir)
+      erb :status
+    end
+      
     # create new ticket
     post "/tickets" do
       protected!

@@ -1,0 +1,6 @@
+<% require 'filesize' %>
+<ul>
+   <li>Active tickets: <%= @no_of_tickets %></li>
+   <li>Used space: <%= Filesize.new(@bytes_used).pretty %></li>
+   <li>Available space: <%= Filesize.new(@bytes_free).pretty %></li>
+</ul>

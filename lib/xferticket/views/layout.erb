@@ -20,9 +20,9 @@
               <% if settings.logo %>
                 <a class="right logo" href="<%= settings.logolink ? settings.logolink : "/" %>"><img src="<%= settings.logo %>" style="height:64px;" /></a>
               <% end %>
-              <a class="right" href="#about" >About</a>
               <% if session[:userid] %>
                 <a class="right" href="/logout" >Log out</a>
+                <a class="right" href="/status" >Status</a>
                 <a class="right" href="/" ><%= session[:userid] %></a>
             <% else %>
               <a class="right" href="/login" >Login</a>
