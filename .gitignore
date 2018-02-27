@@ -9,4 +9,5 @@ TODO
 config/config.yml
 config/config-nbis.yml
 .rufus-scheduler.lock
+tmp/
 
