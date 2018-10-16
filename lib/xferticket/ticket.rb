@@ -18,9 +18,10 @@ module XferTickets
     property :allow_uploads, Boolean, :default => true
 
     before :destroy do
+    puts "Deleting: #{self.uuid}"
       # replace w/ delete dir
       begin
-        puts "Deleting: #{self.uuid}"
+        self.set_allow_uploads(true)
         FileUtils.remove_entry_secure(self.directory, true)
       rescue
         puts "Hmmmm... could not find data dir #{self.directory}."
