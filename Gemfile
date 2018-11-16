@@ -17,6 +17,7 @@ gem 'minitar'
 gem 'net-ldap'
 gem 'puma'
 gem 'filesize'
+gem 'sanitize'
 
 group :development do
   gem 'foreman'

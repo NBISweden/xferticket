@@ -4,6 +4,7 @@ require 'dm-validations'
 require 'dm-aggregates'
 require 'dm-migrations'
 require 'ostruct'
+require 'sanitize'
 
 module XferTickets
   # Tickets 
@@ -30,7 +31,7 @@ module XferTickets
 
     def initialize(params, user)
       self.userid = user
-      self.title = params[:title]
+      self.title = Sanitize.clean(params[:title])
       self.uuid = SecureRandom.urlsafe_base64(n=32)
       Dir.mkdir(self.directory, 0777)
       File.chmod(0777, self.directory)
