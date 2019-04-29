@@ -166,7 +166,7 @@ module XferTickets
       halt 404, 'not found' unless @ticket
       ownerprotected!(@ticket)
       @ticket.destroy 
-      redirect to('/')
+      halt 200
     end
 
 
