@@ -155,7 +155,11 @@ module XferTickets
        if @ticket.check_password(params["password"])
          session[u] = true
        end
-      redirect to('/tickets/'+u )
+       if(params[:back_url])
+         redirect to(params[:back_url])
+       else
+         redirect to('/tickets/'+u )
+       end
     end
 
     # view status
@@ -194,6 +198,17 @@ module XferTickets
     # view ticket
     get "/tickets/:uuid/?" do |u|
       #not_found if u.nil?
+      @ticket = Ticket.first(:uuid => u)
+      halt 404, 'not found' unless @ticket
+      if(pwdprotected!(@ticket, params['password']))
+        erb :ticket
+      else
+        erb :unlock
+      end
+    end
+
+    # view unlock ticket
+    get "/tickets/:uuid/unlock/?" do |u|
       @ticket = Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
       if(pwdprotected!(@ticket, params['password']))
