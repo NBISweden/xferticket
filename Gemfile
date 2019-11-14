@@ -18,6 +18,7 @@ gem 'net-ldap'
 gem 'puma'
 gem 'filesize'
 gem 'sanitize'
+gem 'bcrypt'
 
 group :development do
   gem 'foreman'

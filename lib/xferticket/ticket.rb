@@ -5,6 +5,7 @@ require 'dm-aggregates'
 require 'dm-migrations'
 require 'ostruct'
 require 'sanitize'
+require 'bcrypt'
 
 module XferTickets
   # Tickets 
@@ -16,6 +17,8 @@ module XferTickets
     property :userid, String
     property :title, String
     property :uuid, String, :unique => true, :required => true
+    property :salt, String
+    property :pwd, String
     property :allow_uploads, Boolean, :default => true
 
     before :destroy do
@@ -33,6 +36,7 @@ module XferTickets
       self.userid = user
       self.title = Sanitize.clean(params[:title])
       self.uuid = SecureRandom.urlsafe_base64(n=32)
+      self.pwd = nil
       Dir.mkdir(self.directory, 0777)
       File.chmod(0777, self.directory)
     end
@@ -57,6 +61,22 @@ module XferTickets
         self.allow_uploads = false
         File.chmod(0555, self.directory)
       end
+    end
+
+    def set_password(str)
+      if(str.empty?)
+        self.pwd = nil
+      else
+        self.pwd = BCrypt::Password.create(str)
+      end
+      p self.pwd
+    end
+
+    def check_password(str)
+      p self.pwd
+      p str
+      p self.pwd == str
+      !self.pwd || self.pwd == str
     end
   end
 end

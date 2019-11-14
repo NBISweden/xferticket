@@ -102,6 +102,11 @@ module XferTickets
         halt 401, "Not authorized\n" unless session[:userid] == t.userid
       end
 
+      def pwdprotected!(t, pwd)
+        halt 404, "Not found\n" unless t
+        redirect('/') unless session[:userid] == t.userid || session[t.uuid] || t.check_password(pwd)
+      end
+
       def dirsize(path)
         return 0 unless File.directory?(path)
         Dir.glob(File.join(path, '**', '*')).map{ |f| File.exist?(f) ? File.size(f) : 0  }.inject(0, :+)
@@ -142,6 +147,16 @@ module XferTickets
       redirect to('/')
     end
 
+    # password unlock
+    post "/tickets/:uuid/unlock?" do |u|
+      @ticket = XferTickets::Ticket.first(:uuid => u)
+      halt 404, 'not found' unless @ticket
+       if @ticket.check_password(params["password"])
+         session[u] = true
+       end
+      redirect to('/tickets/'+u )
+    end
+
     # view status
     get "/status" do
       protected!
@@ -174,11 +189,14 @@ module XferTickets
     get "/tickets/?" do
       redirect to('/')
     end
+
     # view ticket
     get "/tickets/:uuid/?" do |u|
       #not_found if u.nil?
       @ticket = Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
+      pwdprotected!(@ticket, params['password'])
+      STDERR.puts @ticket.pwd
       erb :ticket
     end
 
@@ -191,11 +209,21 @@ module XferTickets
       200
     end
 
+    # set password
+    patch "/tickets/:uuid/set_password?" do |u|
+      @ticket = XferTickets::Ticket.first(:uuid => u)
+      ownerprotected!(@ticket)
+      @ticket.set_password(params['password'])
+      @ticket.save
+      200
+    end
+
     # upload file
     post "/tickets/:uuid/upload/?" do |u|
       @ticket = XferTickets::Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
       halt 401, 'not allowed' unless @ticket.allow_uploads
+      pwdprotected!(@ticket, params['password'])
       if (params["filename.uploadsmodule"])
         # upload already handled by fron httpd, just move file to correct location
         FileUtils.mv(params["filename.path"], File.join(@ticket.directory,params["filename.name"]))
@@ -212,6 +240,7 @@ module XferTickets
       @ticket = XferTickets::Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
       halt 401, 'not allowed' unless @ticket.allow_uploads
+      pwdprotected!(@ticket, params['password'])
       File.open(File.join(@ticket.directory, fn), "w") do |f|
         f.write(request.body.read)
       end
@@ -222,6 +251,7 @@ module XferTickets
     get "/tickets/:uuid/:f/download/?" do |u,f|
       @ticket = XferTickets::Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
+      pwdprotected!(@ticket, params['password'])
       fn = File.join(@ticket.directory, f)
       halt 404, 'not found' unless File.exist?(fn)
       if(settings.accelredirect )
@@ -236,6 +266,7 @@ module XferTickets
     get "/tickets/:uuid/downloadarchive/?" do |u|
       @ticket = XferTickets::Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
+      pwdprotected!(@ticket, params['password'])
       attachment("archive.tar")
       stream do |out|
         Dir.chdir(@ticket.directory) do

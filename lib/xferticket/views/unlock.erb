@@ -1,0 +1,8 @@
+<h2>Unlock</h2>
+This is a password protected area.
+<br><br>
+<form method="POST" action="/tickets/<%= @ticket.uuid %>/unlock">
+        <input type="password" name="password">
+        <input type="submit" value="Unlock">
+</form>
+

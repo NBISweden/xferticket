@@ -137,6 +137,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   data_mapper
   dm-aggregates
   dm-core
@@ -161,4 +162,4 @@ DEPENDENCIES
   sys-filesystem
 
 BUNDLED WITH
-   1.15.1
+   1.16.4
