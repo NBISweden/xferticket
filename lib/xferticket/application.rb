@@ -104,7 +104,8 @@ module XferTickets
 
       def pwdprotected!(t, pwd)
         halt 404, "Not found\n" unless t
-        redirect('/') unless session[:userid] == t.userid || session[t.uuid] || t.check_password(pwd)
+        #redirect('/') unless session[:userid] == t.userid || session[t.uuid] || t.check_password(pwd)
+        session[:userid] == t.userid || session[t.uuid] || t.check_password(pwd)
       end
 
       def dirsize(path)
@@ -195,9 +196,11 @@ module XferTickets
       #not_found if u.nil?
       @ticket = Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
-      pwdprotected!(@ticket, params['password'])
-      STDERR.puts @ticket.pwd
-      erb :ticket
+      if(pwdprotected!(@ticket, params['password']))
+        erb :ticket
+      else
+        erb :unlock
+      end
     end
 
     # set allow_uploads

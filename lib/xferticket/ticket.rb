@@ -18,7 +18,7 @@ module XferTickets
     property :title, String
     property :uuid, String, :unique => true, :required => true
     property :salt, String
-    property :pwd, String
+    property :pwd, Text
     property :allow_uploads, Boolean, :default => true
 
     before :destroy do
@@ -67,16 +67,12 @@ module XferTickets
       if(str.empty?)
         self.pwd = nil
       else
-        self.pwd = BCrypt::Password.create(str)
+        self.pwd = BCrypt::Password.create(str).to_s
       end
-      p self.pwd
     end
 
     def check_password(str)
-      p self.pwd
-      p str
-      p self.pwd == str
-      !self.pwd || self.pwd == str
+      !self.pwd || BCrypt::Password.new(self.pwd).is_password?(str)
     end
   end
 end
