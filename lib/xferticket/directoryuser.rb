@@ -9,7 +9,7 @@ module XferTickets
       ldap = Net::LDAP.new(:host => settings.ldap_server,
                            :port => settings.ldap_port,
                            :base => settings.ldap_base,
-                           :encryption => settings.ldap_enc ? :simple_tls : nil,
+                           :encryption => settings.ldap_enc ? :start_tls : nil,
                            :auth => { :method => :anonymous })
       ldap.bind_as(:base => settings.ldap_base,
                    :filter => "(uid=#{Net::LDAP::Filter.escape(params.first)})",
