@@ -51,6 +51,15 @@ Start local server:
 Now you can test xferticket by pointing your browser to http://localhost:5000.
 
 
+## Run in docker
+
+```bash
+cp conf/config-example.yml conf/config.yml
+mkdir -p tmp/{log,sockets}
+docker build . -t xferticket
+docker run --rm -ti -v "$PWD:/usr/src/app" -p 5000:5000 xferticket
+```
+
 ## Deployment
 
 See INSTALL for deployment instructions. (TBC)
