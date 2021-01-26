@@ -15,13 +15,12 @@ If you recieved a password from the NBIS expert you need to unlock the space.
 
 ## For NBIS Staff
 
- 1. If you don't have an account in the service.
-    Ask @viklund on slack or send an email to cto@nbis.se.
+ 1. If you don't have an account in the service ask @viklund on slack or send an email to cto@nbis.se.
  2. Login to the system by using the login button.
  3. Create a transfer ticket.
     You can give it an optional name.
  4. The expiry date links to the ticket url you should send to the researcher
- 5. By toggling "Uploads" you can cancel more uploads to the ticket.
+ 5. By toggling "Uploads" you can prevent further uploads to the ticket.
     This is useful for deliveries to researchers.
     So you can first upload a bunch of files to the ticket, then lock it and finally send the ticket URL.
  6. With the padlock icon you can give the ticket a password, don't forget to also send this to the researcher.
