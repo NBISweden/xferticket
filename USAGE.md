@@ -8,7 +8,7 @@ The service is avaiable here: [https://xferticket.nbis.se](https://xferticket.nb
 In case you need to send large datasets to an NBIS expert they will provide you with a link with a HTML form to which you can upload files.
 The files are only accesible to people that know the full URL of the link.
 Everything uploaded will be automatically deleted after the expiry time.
-If you recieved a password from the NBIS expert you need to unlock the space.
+If you received a password from the NBIS expert you need it to unlock the space.
 
 *NB* If your data contains sensitive data do *NOT* use this service.
 
