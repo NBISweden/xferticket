@@ -1,3 +1,5 @@
+# If run in container, any paths given are evalutaed in that mount namespace
+
 # logo file (link to image, or false to disable)
 logo: false
 # logolink: URL for logo
@@ -6,11 +8,23 @@ logolink: false
 # ticket TTL in days
 expiration_time: 7
 
-# data directory
-datadir: "/tmp/xferticket/"
+# data directory (must exist)
+datadir: "/data/"
+
+# path to lockfile (should not need to change)
+# lockfile: "/tmp/.rufus-scheduler.lock"
+
+# URL for a database used for ORM, is overriden by environment DATABASEURL if set
+# databaseurl: "sqlite3:///data/datamapper.db"
+
+# Alternative to providing session secret as SESSION_SECRET variable
+# if neither this nor the environment variable is set, a random
+# secret is used and sessions are lost on container restart
+#
+# session_secret: SomeSecret
 
 # authentication method
-# valid options: 'ldap' and 'simplepassword'
+# valid options: 'ldap', 'imap' and 'simplepassword'
 authentication: "ldap"
 
 # sample ldap settings below are for the
@@ -31,6 +45,20 @@ ldap_enc: false
   
 # Search base of the authenticating LDAP server
 ldap_base: "dc=example,dc=com"
+
+#
+# sample IMAP settings
+#
+# the driver will try to upgrade the connection using STARTTLS if
+# available (can not be disabled).
+#
+# imap_tls is for pointing to an imaps server (typically at port 993).
+#
+
+imap_server: "mail.example.com"
+imap_port: 143
+imap_tls: false
+
 
 accelredirect: false
 
