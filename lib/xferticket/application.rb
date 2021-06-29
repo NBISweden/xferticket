@@ -136,6 +136,10 @@ module XferTickets
         user = XferTickets::DirectoryUser.authenticate(settings, [params[:username], params[:password]])
         session[:userid] = user.first.uid.first if user
         settings.logger.info "Log in by user #{session[:userid]}"
+      elsif(settings.authentication == "imap")
+        user = XferTickets::IMAPUser.authenticate(settings, [params[:username], params[:password]])
+        session[:userid] = user
+        settings.logger.info "Log in by user #{session[:userid]}"
       end
       if session[:userid]
         redirect to('/')
