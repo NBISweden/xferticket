@@ -1,6 +1,4 @@
-FROM ruby:2.5
-
-RUN bundle config --global frozen 1
+FROM ruby:2
 
 WORKDIR /usr/src/app
 
