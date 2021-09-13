@@ -1,17 +1,18 @@
-FROM ruby:2.5
-
-RUN bundle config --global frozen 1
+FROM ruby:2
 
 WORKDIR /usr/src/app
 
-RUN adduser --system --group ruby
-USER ruby
-RUN mkdir /tmp/xferticket/
+RUN adduser --system --group ruby && mkdir -p /usr/local/gems /usr/src/app/tmp/log && chown -R ruby /usr/local/gems /usr/src/app
 
+COPY --chown=ruby  ["Procfile","Gemfile*","config.ru", "/usr/src/app/"]
+COPY --chown=ruby lib/ /usr/src/app/lib/
+
+ENV GEM_HOME=/usr/local/gems
 EXPOSE 5000
 
-COPY --chown=ruby Gemfile Gemfile.lock ./
 RUN bundle update --bundler && \
-    bundle install
+    bundle install && chmod -R a-w /usr/src/app
 
-CMD bundle exec foreman start
+USER ruby
+
+CMD ["bundle", "exec", "foreman", "start"]

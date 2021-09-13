@@ -18,6 +18,12 @@ module XferTickets
       alias_method :write, :<<
     end
 
+    # refuse to run as root
+    if Process.uid == 0
+      STDERR.puts 'Please do not run this as root.'
+      exit 1
+    end
+
     configure :production, :development do
       set :logging, nil
       logger = Logger.new STDOUT
@@ -27,6 +33,11 @@ module XferTickets
       set :show_exceptions, true
       set :dump_errors, true
       set :views, "#{File.dirname(__FILE__)}/views"
+      set :session_secret, nil
+
+      set :datadir, "/tmp"
+      set :lockfile, "/tmp/.rufus-scheduler.lock"
+      set :databaseurl, nil
 
       SiteConfig = OpenStruct.new(
         :title => 'xferticket',
@@ -34,31 +45,31 @@ module XferTickets
         :repo => 'https://github.com/NBISweden/xferticket',
       )
 
-      DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
-      DataMapper.finalize
-      DataMapper.auto_upgrade!
+    end
 
+    ymlconfig = 'config/config.yml'
+
+    if ENV['CONFIGFILE']
+      ymlconfig = ENV['CONFIGFILE']
     end
 
     # Load config file
-    unless File.exist?('config/config.yml')
-      STDERR.puts 'Please provide a configuration file config/config.yml'
+    unless File.exist?(ymlconfig)
+      STDERR.puts "Please provide a configuration file config/config.yml (or set CONFIGFILE to point to it)"
       exit 1
     end
 
-    config_file '../../config/config.yml'
-
-    # refuse to run as root
-    if Process.uid == 0
-      STDERR.puts 'Please do not run this as root.' 
-      exit 1
-    end
+    config_file File.absolute_path(ymlconfig)
 
     # check that data directory is writeable
     unless(File.writable?(settings.datadir))
       STDERR.puts "Error: data directory not writeable."
       exit 1
     end
+
+    DataMapper.setup(:default, (ENV["DATABASE_URL"] || settings.databaseurl || "sqlite3:///#{settings.datadir}/datamapper.db"))
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
 
     # warning when using simple password authorization
     if(settings.authentication == "simplepassword")
@@ -68,18 +79,15 @@ module XferTickets
     # set up sessions
     #enable :sessions
     #set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
-    session_secret = ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
+    session_secret = ENV['SESSION_SECRET'] || settings.session_secret || SecureRandom.hex(64)
     use Rack::Session::Cookie, :key => 'rack.session',
       :path => '/',
       :secret => session_secret
 
-
-
     register Sinatra::Flash
 
-
     # remove expired tickets every minute
-    scheduler = Rufus::Scheduler.new(:lockfile => ".rufus-scheduler.lock")
+    scheduler = Rufus::Scheduler.new(:lockfile => settings.lockfile)
     unless scheduler.down?
       scheduler.every '60s' do
         Ticket.all.each do |t|
@@ -135,6 +143,10 @@ module XferTickets
       elsif(settings.authentication == "ldap")
         user = XferTickets::DirectoryUser.authenticate(settings, [params[:username], params[:password]])
         session[:userid] = user.first.uid.first if user
+        settings.logger.info "Log in by user #{session[:userid]}"
+      elsif(settings.authentication == "imap")
+        user = XferTickets::IMAPUser.authenticate(settings, [params[:username], params[:password]])
+        session[:userid] = user
         settings.logger.info "Log in by user #{session[:userid]}"
       end
       if session[:userid]

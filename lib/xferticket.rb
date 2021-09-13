@@ -11,6 +11,7 @@ require "logger"
 require 'pp'
 
 require "xferticket/directoryuser.rb"
+require "xferticket/imapuser.rb"
 require "xferticket/ticket.rb"
 require "xferticket/application.rb"
 
