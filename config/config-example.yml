@@ -5,8 +5,8 @@ logo: false
 # logolink: URL for logo
 logolink: false
 
-# ticket TTL in days
-expiration_time: 7
+# maximum ticket TTL in days
+maximum_expiration_time: 90
 
 # data directory (must exist)
 datadir: "/data/"
