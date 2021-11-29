@@ -91,7 +91,7 @@ module XferTickets
     unless scheduler.down?
       scheduler.every '60s' do
         Ticket.all.each do |t|
-          if(t.created_at + settings.expiration_time < DateTime.now)
+          if(t.expirydate < DateTime.now)
             settings.logger.info "Deleting expired ticket #{t.uuid}"
             t.destroy
           end

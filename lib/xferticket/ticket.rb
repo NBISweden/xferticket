@@ -14,6 +14,7 @@ module XferTickets
 
     property :id, Serial
     property :created_at, DateTime
+    property :expire_days, Integer
     property :userid, String
     property :title, String
     property :uuid, String, :unique => true, :required => true
@@ -35,6 +36,10 @@ module XferTickets
     def initialize(params, user)
       self.userid = user
       self.title = Sanitize.clean(params[:title])
+      self.expire_days = [
+          Integer(params[:expire_days], 10),
+          XferTickets::Application.settings.maximum_expiration_time
+      ].min
       self.uuid = SecureRandom.urlsafe_base64(n=32)
       self.pwd = nil
       Dir.mkdir(self.directory, 0777)
@@ -42,7 +47,7 @@ module XferTickets
     end
 
     def expirydate
-      return self.created_at + XferTickets::Application.settings.expiration_time
+      return self.created_at + self.expire_days
     end
 
     def directory
