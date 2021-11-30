@@ -284,7 +284,7 @@ module XferTickets
         settings.logger.info "#{fn} -> X-Accel-Redirect: #{redirectlink}"
         response.headers['X-Accel-Redirect'] = redirectlink
       end
-      send_file fn
+      send_file fn, :filename => File.basename(fn), :disposition => "inline"
     end
 
     # download archive
