@@ -248,7 +248,7 @@ module XferTickets
       @ticket = XferTickets::Ticket.first(:uuid => u)
       halt 404, 'not found' unless @ticket
       halt 401, 'not allowed' unless @ticket.allow_uploads
-      pwdprotected!(@ticket, params['password'])
+      #pwdprotected!(@ticket, params['password'])
       if (params["filename.uploadsmodule"])
         # upload already handled by fron httpd, just move file to correct location
         FileUtils.mv(params["filename.path"], File.join(@ticket.directory,params["filename.name"]))
