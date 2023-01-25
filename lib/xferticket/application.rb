@@ -253,10 +253,9 @@ module XferTickets
         # upload already handled by fron httpd, just move file to correct location
         FileUtils.mv(params["filename.path"], File.join(@ticket.directory,params["filename.name"]))
       else
-        File.open(File.join(@ticket.directory, params['filename'][:filename]), "w") do |f|
-          f.write(params['filename'][:tempfile].read)
-          #f.write(request.body.read) # does not work, boundaries included
-        end
+        source_fn = params['filename'][:tempfile].path
+        target_fn = File.join(@ticket.directory, params['filename'][:filename])
+        File.rename(source_fn, target_fn)
       end
       redirect back
     end
