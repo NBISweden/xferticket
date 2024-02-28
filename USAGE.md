@@ -15,7 +15,7 @@ If you received a password from the NBIS expert you need it to unlock the space.
 
 ## For NBIS Staff
 
- 1. If you don't have an account in the service ask @viklund on slack or send an email to cto@nbis.se.
+ 1. Login to the system by using your @nbis.se email username and password.
  2. Login to the system by using the login button.
  3. Create a transfer ticket.
     You can give it an optional name and choose the expiry time.
