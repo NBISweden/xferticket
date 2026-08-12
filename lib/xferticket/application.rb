@@ -286,18 +286,24 @@ module XferTickets
       send_file fn, :filename => File.basename(fn), :disposition => "inline"
     end
 
-    # download archive
+    # display message about disabled archive download
     get "/tickets/:uuid/downloadarchive/?" do |u|
-      @ticket = XferTickets::Ticket.first(:uuid => u)
-      halt 404, 'not found' unless @ticket
-      pwdprotected!(@ticket, params['password'])
-      attachment("archive.tar")
-      stream do |out|
-        Dir.chdir(@ticket.directory) do
-          Archive::Tar::Minitar.pack(Dir.glob('*'), out)
-        end
-      end
+      content_type 'text/plain'
+      "Downloading as an archive has been disabled."
     end
+
+#    # download archive
+#    get "/tickets/:uuid/downloadarchive/?" do |u|
+#      @ticket = XferTickets::Ticket.first(:uuid => u)
+#      halt 404, 'not found' unless @ticket
+#      pwdprotected!(@ticket, params['password'])
+#      attachment("archive.tar")
+#      stream do |out|
+#        Dir.chdir(@ticket.directory) do
+#          Archive::Tar::Minitar.pack(Dir.glob('*'), out)
+#        end
+#      end
+#    end
 
   end
 end
