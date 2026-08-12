@@ -27,19 +27,8 @@
 <% if @ticket.files.size > 1  %>
 <br>
 <b>Total size: </b> <%= Filesize.new(dirsize(@ticket.directory)).pretty %>
-<% end %>
-<% end %>
-<% if @ticket.files.size > 1 %>
 <br><br>
-<h4>Download all</h4>
-All files can be downloaded as a tar archive:<br>
-<a href=/tickets/<%= @ticket.uuid %>/downloadarchive>Download all files as archive.</a><br>
-From the command line:<br>
-<pre>
-curl -O -J https://<%= request.env["HTTP_HOST"] %>/tickets/<%= @ticket.uuid %>/downloadarchive
-</pre>
-Note that downloading individual files is more performant than downloading as
-archive.
+<% end %>
 <% end %>
 
 <% if @ticket.allow_uploads %>
