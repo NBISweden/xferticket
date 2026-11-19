@@ -1,3 +1,6 @@
+Fixnum = Integer unless defined?(Fixnum)
+Bignum = Integer unless defined?(Bignum)
+
 require 'dm-core'
 require 'dm-timestamps'
 require 'dm-validations'
@@ -38,6 +41,10 @@ module XferTickets
       set :datadir, "/tmp"
       set :lockfile, "/tmp/.rufus-scheduler.lock"
       set :databaseurl, nil
+
+      set :host_authorization, {
+        permitted_hosts: ENV.fetch('PERMITTED_HOSTS', 'xferticket.nbis.se').split(',')
+      }
 
       SiteConfig = OpenStruct.new(
         :title => 'xferticket',

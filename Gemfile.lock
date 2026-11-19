@@ -1,13 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.0)
-      public_suffix (>= 2.0.2, < 5.0)
-    bcrypt (3.1.16)
+    addressable (2.9.2)
+      public_suffix (>= 2.0.2, < 8.0)
+    base64 (0.3.0)
+    bcrypt (3.1.22)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
-    concurrent-ruby (1.1.9)
-    crass (1.0.6)
+    bigdecimal (4.1.3)
+    concurrent-ruby (1.3.8)
+    crass (1.0.8)
     data_mapper (1.2.0)
       dm-aggregates (~> 1.2.0)
       dm-constraints (~> 1.2.0)
@@ -20,8 +22,8 @@ GEM
       dm-validations (~> 1.2.0)
     data_objects (0.10.17)
       addressable (~> 2.1)
-    diff-lcs (1.4.4)
-    digest (3.0.0)
+    date (3.6.0)
+    diff-lcs (1.6.2)
     dm-aggregates (1.2.0)
       dm-core (~> 1.2.0)
     dm-constraints (1.2.0)
@@ -58,97 +60,130 @@ GEM
       dm-core (~> 1.2.0)
     do_sqlite3 (0.10.17)
       data_objects (= 0.10.17)
-    dotenv (2.7.6)
-    et-orbi (1.2.4)
+    dotenv (3.2.0)
+    et-orbi (1.4.2)
       tzinfo
     fastercsv (1.5.5)
-    ffi (1.15.3)
+    ffi (1.17.4-aarch64-linux-gnu)
+    ffi (1.17.4-aarch64-linux-musl)
+    ffi (1.17.4-arm-linux-gnu)
+    ffi (1.17.4-arm-linux-musl)
+    ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
+    ffi (1.17.4-x86_64-linux-musl)
     filesize (0.2.0)
-    foreman (0.87.2)
-    fugit (1.5.0)
-      et-orbi (~> 1.1, >= 1.1.8)
+    foreman (0.90.0)
+      thor (~> 1.4)
+    fugit (1.14.0)
+      et-orbi (~> 1.4)
       raabro (~> 1.4)
-    io-wait (0.1.0)
     json (1.8.6)
     json_pure (1.8.6)
-    mini_portile2 (2.5.3)
-    minitar (0.9)
-    multi_json (1.15.0)
-    mustermann (1.1.1)
-      ruby2_keywords (~> 0.0.1)
-    net-imap (0.2.1)
-      digest
+    logger (1.7.0)
+    minitar (1.2.0)
+    multi_json (1.21.2)
+    mustermann (3.1.1)
+    net-imap (0.6.8)
+      date
       net-protocol
-      strscan
-    net-ldap (0.17.0)
-    net-protocol (0.1.1)
-      io-wait
+    net-ldap (0.21.0)
+      base64
+      ostruct
+    net-protocol (0.4.0)
       timeout
-    nio4r (2.5.7)
-    nokogiri (1.11.7)
-      mini_portile2 (~> 2.5.0)
+    nio4r (2.7.5)
+    nokogiri (1.19.7-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogumbo (2.0.5)
-      nokogiri (~> 1.8, >= 1.8.4)
-    public_suffix (4.0.6)
-    puma (5.3.2)
+    nokogiri (1.19.7-aarch64-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.19.7-arm-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.19.7-arm-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.19.7-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.19.7-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.19.7-x86_64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.19.7-x86_64-linux-musl)
+      racc (~> 1.4)
+    ostruct (0.6.3)
+    public_suffix (7.0.5)
+    puma (8.1.2)
       nio4r (~> 2.0)
-    raabro (1.4.0)
-    racc (1.5.2)
-    rack (2.2.3)
-    rack-protection (2.1.0)
-      rack
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
-    rake (13.0.3)
-    rspec (3.10.0)
-      rspec-core (~> 3.10.0)
-      rspec-expectations (~> 3.10.0)
-      rspec-mocks (~> 3.10.0)
-    rspec-core (3.10.1)
-      rspec-support (~> 3.10.0)
-    rspec-expectations (3.10.1)
+    raabro (1.5.0)
+    racc (1.8.1)
+    rack (3.2.8)
+    rack-protection (4.2.2)
+      base64 (>= 0.1.0)
+      logger (>= 1.6.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.1.2)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0)
+    rack-test (2.3.0)
+      rack (>= 1.3)
+    rackup (2.3.1)
+      rack (>= 3)
+    rake (13.4.2)
+    rspec (3.13.2)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.7)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.6)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.10.0)
-    rspec-mocks (3.10.2)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.9)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.10.0)
-    rspec-support (3.10.2)
-    ruby2_keywords (0.0.4)
-    rufus-scheduler (3.7.0)
-      fugit (~> 1.1, >= 1.1.6)
-    sanitize (5.2.3)
-      crass (~> 1.0.2)
-      nokogiri (>= 1.8.0)
-      nokogumbo (~> 2.0)
-    sinatra (2.1.0)
-      mustermann (~> 1.0)
-      rack (~> 2.2)
-      rack-protection (= 2.1.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.8)
+    rufus-scheduler (3.9.2)
+      fugit (~> 1.1, >= 1.11.1)
+    sanitize (7.0.2)
+      crass (~> 1.0.8)
+      nokogiri (>= 1.19.7)
+    sinatra (4.2.2)
+      logger (>= 1.6.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.2.2)
+      rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
-    sinatra-contrib (2.1.0)
-      multi_json
-      mustermann (~> 1.0)
-      rack-protection (= 2.1.0)
-      sinatra (= 2.1.0)
+    sinatra-contrib (4.2.2)
+      multi_json (>= 0.0.2)
+      mustermann (~> 3.0)
+      rack-protection (= 4.2.2)
+      sinatra (= 4.2.2)
       tilt (~> 2.0)
     sinatra-flash (0.3.0)
       sinatra (>= 1.0.0)
     stringex (1.5.1)
-    strscan (3.0.0)
-    sys-filesystem (1.4.1)
+    sys-filesystem (1.6.0)
       ffi (~> 1.1)
-    tilt (2.0.10)
-    timeout (0.1.1)
-    tzinfo (2.0.4)
+    thor (1.5.0)
+    tilt (2.9.0)
+    timeout (0.6.1)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uuidtools (2.2.0)
 
 PLATFORMS
-  ruby
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   bcrypt
+  bigdecimal
   data_mapper
   dm-aggregates
   dm-core
@@ -164,6 +199,7 @@ DEPENDENCIES
   net-ldap
   puma
   rack-test
+  rackup
   rake
   rspec
   rufus-scheduler
@@ -174,4 +210,4 @@ DEPENDENCIES
   sys-filesystem
 
 BUNDLED WITH
-   2.1.4
+   2.6.9

@@ -20,6 +20,8 @@ gem 'puma'
 gem 'filesize'
 gem 'sanitize'
 gem 'bcrypt'
+gem 'rackup'
+gem 'bigdecimal'
 
 group :development do
   gem 'foreman'
