@@ -42,6 +42,10 @@ module XferTickets
       set :lockfile, "/tmp/.rufus-scheduler.lock"
       set :databaseurl, nil
 
+      set :host_authorization, {
+        permitted_hosts: ENV.fetch('PERMITTED_HOSTS', 'xferticket.nbis.se').split(',')
+      }
+
       SiteConfig = OpenStruct.new(
         :title => 'xferticket',
         :author => 'Mikael Borg',
