@@ -1,3 +1,6 @@
+Fixnum = Integer unless defined?(Fixnum)
+Bignum = Integer unless defined?(Bignum)
+
 require 'dm-core'
 require 'dm-timestamps'
 require 'dm-validations'
